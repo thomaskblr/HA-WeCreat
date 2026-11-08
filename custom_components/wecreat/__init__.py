@@ -9,7 +9,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 from .api import StatusError, read_status
 
 DOMAIN = "wecreat"
-PLATFORMS = [Platform.SENSOR]
+PLATFORMS = [Platform.SENSOR, Platform.CAMERA]
 
 
 async def async_setup_entry(hass, entry):

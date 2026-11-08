@@ -23,6 +23,10 @@ class MonitorTests(IsolatedAsyncioTestCase):
 
         app = web.Application()
         app.router.add_post("/process/status", status)
+        async def photo(request):
+            return web.Response(body=self.photo_body, status=self.http_status)
+
+        app.router.add_get("/camera/take_photo", photo)
         self.server = TestServer(app)
         await self.server.start_server()
         self.addAsyncCleanup(self.server.close)
@@ -56,3 +60,12 @@ class MonitorTests(IsolatedAsyncioTestCase):
             self.payload = payload
             with self.subTest(payload=payload), self.assertRaises(api.StatusError):
                 await self.read()
+
+    async def test_photo_success_and_errors(self):
+        self.photo_body = bytes.fromhex("ffd8ffe00004abcdffd9")
+        self.assertEqual(await api.read_photo(self.session, self.server.host, self.server.port),
+                         self.photo_body)
+        for status, body in [(200, b"<html>"), (200, self.photo_body[:-2]), (503, b"")]:
+            self.http_status, self.photo_body = status, body
+            with self.subTest(status=status, body=body), self.assertRaises(api.PhotoError):
+                await api.read_photo(self.session, self.server.host, self.server.port)

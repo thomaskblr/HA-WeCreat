@@ -1,0 +1,22 @@
+alias: WeCreat ready with a bed photo
+triggers:
+  - trigger: state
+    entity_id: sensor.your_laser_process_status
+    from: "cooldown"
+    to: "ready"
+actions:
+  - variables:
+      photo: "wecreat-{{ trigger.to_state.context.id }}.jpg"
+  - action: camera.snapshot
+    continue_on_error: true
+    target:
+      entity_id: camera.your_laser_bed_camera
+    data:
+      filename: "/media/{{ photo }}"
+  - action: notify.mobile_app_your_phone
+    data:
+      title: WeCreat
+      message: Fan cooldown ended. Your laser is ready for the next piece.
+      data:
+        image: "/media/local/{{ photo }}"
+mode: queued
