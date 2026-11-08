@@ -1,0 +1,42 @@
+{
+  "title": "WeCreat Laser Monitor",
+  "config": {
+    "step": {
+      "user": {
+        "title": "WeCreat connection",
+        "data": {
+          "host": "Laser IP address or hostname",
+          "port": "Port"
+        }
+      },
+      "reconfigure": {
+        "title": "WeCreat connection",
+        "data": {
+          "host": "Laser IP address or hostname",
+          "port": "Port"
+        }
+      }
+    },
+    "error": {
+      "invalid_host": "Enter an IP address or hostname.",
+      "cannot_connect": "Check the address, Wi-Fi connection and status response."
+    },
+    "abort": {
+      "already_configured": "This laser is already configured.",
+      "reconfigure_successful": "Connection updated."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "process_status": {
+        "name": "Process status",
+        "state": {
+          "running": "Running",
+          "cooldown": "Idle with fan on",
+          "ready": "Ready",
+          "unrecognized": "Unrecognized"
+        }
+      }
+    }
+  }
+}
